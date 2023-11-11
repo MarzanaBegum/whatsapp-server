@@ -1,12 +1,10 @@
 const router = require("express").Router();
+const { HandleOnboardUser,CheckUser } = require("../controllers/AuthController");
 
-const { Signup, Signin, CheckUser } = require("../controllers/AuthController");
-
-router.post("/signup", Signup);
-
-router.post("/login", Signin);
+//onboard user
+router.post("/onboard-user", HandleOnboardUser);
 
 //check user 
-router.get("/user/:email",CheckUser)
+router.get("/user:email",CheckUser)
 
 module.exports = router;
