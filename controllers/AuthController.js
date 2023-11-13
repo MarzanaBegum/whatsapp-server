@@ -37,4 +37,31 @@ const CheckUser = async (req, res) => {
   }
 };
 
-module.exports = { HandleOnboardUser, CheckUser };
+const GetAllUsers = async (req, res) => {
+  try {
+    const users = await User.aggregate([
+      {
+        $addFields: {
+          firstCharacter: { $substr: ["$name", 0, 1] },
+        },
+      },
+      {
+        $sort: { firstCharacter: 1, name: 1 },
+      },
+      {
+        $group: {
+          _id: "$firstCharacter",
+          users: { $push: "$$ROOT" },
+        },
+      },
+      {
+        $sort: { _id: 1 }, // Sort groups by the first character
+      },
+    ]);
+    res.status(200).send(users);
+  } catch (error) {
+    res.status(500).send({ message: "Internal server error" });
+  }
+};
+
+module.exports = { HandleOnboardUser, CheckUser, GetAllUsers };

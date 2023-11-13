@@ -13,6 +13,9 @@ const UserSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
+    about: {
+      type: String,
+    },
     picture: {
       type: String,
     },
@@ -27,7 +30,7 @@ const SignupValidation = async (data) => {
   const schema = Joi.object({
     name: Joi.string().required().label("Name"),
     email: Joi.string().email().required().label("Email"),
-    about: Joi.string().required().label("About"),
+    about: Joi.string().label("About"),
     picture: Joi.string(),
     status: Joi.boolean(),
   });
